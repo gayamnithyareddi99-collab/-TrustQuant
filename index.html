@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrustQuant | Measure Trust. Reduce Risk. Drive Confident Decisions.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+:root{
+  --navy:#050B1F;--navy-mid:#0A1535;--navy-deep:#030814;--navy-card:#0D1D45;
+  --cyan:#00D4FF;--cyan-dim:#00B8E0;--cyan-glow:rgba(0,212,255,0.18);
+  --purple:#7B5CFA;--purple-dim:#6246E0;--purple-glow:rgba(123,92,250,0.18);
+  --violet:#A855F7;
+  --nav-bg:#050B1F;--footer-bg:#030814;
+  --bg-white:#F0F4FF;--bg-light:#E4EAFF;--bg-section:#D8E2FF;
+  --card-border:rgba(0,212,255,0.18);
+  --text-dark:#060D2A;--text-mid:#1B2D5A;--text-muted:#3E5080;--text-light:#6A80B0;--white:#FFFFFF;
+  --nav-h:72px;--max-w:1200px;
+  --font:'Plus Jakarta Sans',sans-serif;--display:'Sora',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --ease:cubic-bezier(0.4,0,0.2,1);--ease-out:cubic-bezier(0,0,0.2,1);
+}
+body{font-family:var(--font);color:var(--text-dark);background:var(--bg-white);overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg-light);}::-webkit-scrollbar-thumb{background:var(--cyan-dim);border-radius:2px;}
+img{display:block;max-width:100%;}
+
+/* NAV */
+.navbar{position:fixed;top:0;left:0;width:100%;height:var(--nav-h);background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,212,255,0.22);z-index:1000;display:flex;align-items:center;padding:0 clamp(16px,5vw,60px);justify-content:space-between;box-shadow:0 2px 24px rgba(0,0,0,0.6);}
+.nav-logo{font-family:var(--display);font-size:17px;font-weight:800;color:var(--white);display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;flex-shrink:0;}
+.nav-logo-icon{width:40px;height:40px;background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(123,92,250,0.2));border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(0,212,255,0.3);border:1px solid rgba(0,212,255,0.4);}
+.nav-logo-icon i{color:#00D4FF;font-size:18px;}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1;}
+.nav-logo-text span{font-size:10px;font-family:var(--mono);font-weight:500;color:rgba(0,212,255,0.85);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.nav-links li button{background:none;border:none;color:rgba(255,255,255,0.85);font-size:11px;font-weight:600;padding:8px 13px;border-radius:7px;transition:all .22s var(--ease);cursor:pointer;font-family:var(--mono);letter-spacing:.8px;text-transform:uppercase;position:relative;white-space:nowrap;}
+.nav-links li button:hover{color:#fff;background:rgba(0,212,255,0.12);}
+.nav-links li button.active{color:#00D4FF;background:rgba(0,212,255,0.1);}
+.nav-links li button.active::after{content:'';position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:14px;height:2px;background:var(--cyan);border-radius:2px;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.btn-demo-nav{background:linear-gradient(135deg,var(--cyan),var(--purple));color:var(--navy);border:none;padding:9px 20px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:all .22s;font-family:var(--mono);letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;box-shadow:0 2px 10px rgba(0,212,255,0.4);}
+.btn-demo-nav:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,212,255,0.6);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;flex-shrink:0;}
+.hamburger span{width:22px;height:2px;background:#00D4FF;border-radius:2px;transition:.3s;display:block;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-nav{display:none;position:fixed;top:var(--nav-h);left:0;width:100%;background:var(--navy-deep);padding:12px 20px 20px;flex-direction:column;gap:2px;z-index:999;border-bottom:1px solid rgba(0,212,255,0.2);animation:slideDown .25s var(--ease-out);}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+.mobile-nav.open{display:flex;}
+.mobile-nav button{background:none;border:none;color:rgba(255,255,255,.8);font-size:13px;font-weight:600;padding:13px 12px;border-bottom:1px solid rgba(0,212,255,.12);cursor:pointer;font-family:var(--mono);text-align:left;text-transform:uppercase;letter-spacing:1px;transition:color .2s,background .2s;border-radius:6px;}
+.mobile-nav button:hover{color:#00D4FF;background:rgba(0,212,255,.08);}
+.mobile-nav .mob-cta{margin-top:8px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:var(--navy);border:none;padding:13px;border-radius:8px;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:var(--mono);}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding-top:var(--nav-h);}
+.page.active{display:block;animation:pgIn .35s var(--ease);}
+@keyframes pgIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* UTILITY */
+.label-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--purple-dim);margin-bottom:14px;}
+.label-tag::before{content:'';width:20px;height:1px;background:var(--purple);}
+.label-tag-w{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(0,212,255,.95);margin-bottom:14px;}
+.label-tag-w::before{content:'';width:20px;height:1px;background:rgba(0,212,255,.7);}
+.section-h2{font-family:var(--display);font-size:clamp(26px,3.5vw,50px);font-weight:800;line-height:1.1;letter-spacing:-.8px;margin-bottom:10px;}
+.h2-dark{color:var(--text-dark);}
+.h2-white{color:#fff;}
+.divider{width:56px;height:3px;margin:16px 0 28px;border-radius:2px;}
+.div-cyan{background:linear-gradient(90deg,var(--cyan),transparent);}
+.div-white{background:linear-gradient(90deg,rgba(0,212,255,.85),transparent);}
+.para-d{color:var(--text-mid);line-height:1.85;font-size:16px;}
+.para-w{color:rgba(255,255,255,.85);line-height:1.85;font-size:16px;}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 clamp(16px,4vw,60px);}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--cyan-dim),var(--purple));color:#fff;padding:13px 28px;border-radius:8px;font-weight:700;font-size:12px;letter-spacing:.8px;text-transform:uppercase;transition:all .25s;font-family:var(--mono);border:none;cursor:pointer;box-shadow:0 4px 16px rgba(0,212,255,.35);}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,212,255,.5);}
+.btn-s{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--cyan);color:var(--navy);padding:12px 28px;border-radius:8px;font-weight:700;font-size:12px;letter-spacing:.8px;text-transform:uppercase;transition:all .25s;font-family:var(--mono);background:none;cursor:pointer;}
+.btn-s:hover{background:rgba(0,212,255,.1);}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;font-family:var(--mono);}
+.badge-c{background:rgba(0,212,255,.1);color:var(--cyan-dim);border:1px solid rgba(0,212,255,.3);}
+.badge-g{background:rgba(123,92,250,.12);color:#6246E0;border:1px solid rgba(123,92,250,.3);}
+.bdot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
+/* HERO */
+.hero{background:linear-gradient(140deg,#E8EEFF 0%,#D5DCFF 40%,#C8D2FF 100%);padding:clamp(60px,10vw,100px) 0 clamp(50px,8vw,80px);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.14) 0%,transparent 70%);pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-60px;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(123,92,250,.1) 0%,transparent 70%);pointer-events:none;}
+.hero-inner{max-width:var(--max-w);margin:0 auto;padding:0 clamp(16px,4vw,60px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,.14);border:1px solid rgba(0,212,255,.4);border-radius:30px;padding:6px 16px;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--navy);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:22px;}
+.hero-bdot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+h1{font-family:var(--display);font-size:clamp(32px,5vw,60px);font-weight:800;line-height:1.06;letter-spacing:-1.5px;color:var(--text-dark);margin-bottom:6px;}
+h1 .cyan{color:var(--cyan-dim);}
+h1 .purple{color:var(--purple-dim);}
+.hero-rule{width:48px;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:2px;margin:20px 0;}
+.hero-body{font-size:16px;color:var(--text-mid);line-height:1.8;margin-bottom:28px;max-width:540px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+
+/* DASHBOARD CARD */
+.dash-card{background:#fff;border-radius:18px;border:1px solid rgba(0,212,255,.3);padding:24px;box-shadow:0 8px 40px rgba(5,11,31,.16);}
+.dash-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.dash-lbl{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;}
+.dash-title{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text-dark);}
+.live-wrap{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cyan-dim);letter-spacing:1.5px;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 1.5s infinite;}
+.score-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(5,11,31,.07);}
+.s-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;}
+.si-c{background:rgba(0,212,255,.14);color:var(--cyan-dim);}
+.si-g{background:rgba(123,92,250,.12);color:#6246E0;}
+.si-e{background:rgba(13,29,69,.1);color:var(--navy);}
+.score-lbl{flex:1;font-size:12px;color:var(--text-muted);}
+.score-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text-dark);}
+.score-big{display:flex;align-items:center;gap:16px;margin-top:18px;padding:16px;background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(123,92,250,.08));border-radius:12px;border:1px solid rgba(0,212,255,.2);}
+.sb-num{font-family:var(--display);font-size:46px;font-weight:800;color:var(--cyan-dim);line-height:1;}
+.sb-info .lbl{font-size:13px;font-weight:700;color:var(--text-dark);}
+.sb-info .sub{font-size:11px;color:var(--text-muted);margin-top:3px;font-family:var(--mono);}
+
+/* DARK SECTION */
+.sec-dark{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%);padding:clamp(60px,8vw,96px) 0;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px;}
+.stat-card{background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.22);border-radius:16px;padding:clamp(20px,3vw,30px);text-align:center;transition:transform .25s,border-color .25s;}
+.stat-card:hover{transform:translateY(-4px);border-color:rgba(0,212,255,.55);}
+.stat-num{font-family:var(--display);font-size:clamp(30px,4vw,46px);font-weight:800;color:#00D4FF;margin-bottom:10px;}
+.stat-lbl{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6;}
+
+/* PLATFORM CARDS */
+.sec-light{background:var(--bg-white);padding:clamp(60px,8vw,96px) 0;}
+.sec-alt{background:var(--bg-light);padding:clamp(60px,8vw,96px) 0;}
+.plat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.plat-card{background:#fff;border:1px solid rgba(5,11,31,.12);border-radius:18px;overflow:hidden;transition:border-color .3s,box-shadow .3s,transform .3s;box-shadow:0 2px 12px rgba(5,11,31,.06);}
+.plat-card:hover{border-color:rgba(0,212,255,.5);box-shadow:0 12px 40px rgba(0,212,255,.14);transform:translateY(-3px);}
+.plat-img{width:100%;height:170px;overflow:hidden;background:var(--navy);display:flex;align-items:flex-end;justify-content:flex-start;position:relative;}
+.plat-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.plat-img i{display:none;}
+.plat-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,11,31,.05) 0%,rgba(5,11,31,.15) 55%,rgba(3,8,20,.88) 100%);z-index:1;}
+.plat-img .pi-tag{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:rgba(0,212,255,.92);padding:4px 10px;border-radius:6px;z-index:3;font-weight:700;}
+.plat-inner{padding:22px;}
+.el-badge{display:inline-block;background:rgba(0,212,255,.12);color:var(--cyan-dim);border-radius:6px;padding:3px 10px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;border:1px solid rgba(0,212,255,.25);}
+.plat-card h3{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:10px;line-height:1.3;}
+.plat-card p{font-size:13px;color:var(--text-muted);line-height:1.75;}
+.more-txt{display:none;font-size:13px;color:var(--text-muted);line-height:1.75;margin-top:10px;padding-top:10px;border-top:1px solid rgba(5,11,31,.08);}
+.plat-card.open .more-txt{display:block;}
+.expand-btn{margin-top:16px;background:none;border:1px solid rgba(5,11,31,.2);color:var(--cyan-dim);padding:7px 18px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--mono);letter-spacing:.8px;text-transform:uppercase;transition:all .2s;}
+.expand-btn:hover{background:rgba(0,212,255,.1);border-color:var(--cyan);}
+
+/* WHY CARDS */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px;}
+.why-card{background:#fff;border:1px solid rgba(5,11,31,.12);border-radius:16px;padding:clamp(20px,3vw,30px);transition:border-color .25s,box-shadow .25s;}
+.why-card:hover{border-color:rgba(0,212,255,.45);box-shadow:0 8px 28px rgba(0,212,255,.12);}
+.why-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(0,212,255,.14),rgba(123,92,250,.1));display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px;color:var(--cyan-dim);border:1px solid rgba(0,212,255,.28);}
+.why-card h4{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:10px;}
+.why-card p{font-size:13px;color:var(--text-muted);line-height:1.75;}
+
+/* ABOUT HERO */
+.about-hero{background:var(--bg-light);padding:clamp(60px,8vw,96px) 0 0;}
+.tw{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+
+/* PROCESS */
+.process-step{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,60px);align-items:center;padding:clamp(40px,6vw,64px) 0;border-bottom:1px solid rgba(5,11,31,.08);}
+.process-step:last-child{border-bottom:none;}
+.step-num{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan-dim);margin-bottom:12px;font-weight:700;}
+.step-h3{font-family:var(--display);font-size:clamp(18px,2.5vw,26px);font-weight:700;color:var(--text-dark);margin-bottom:16px;line-height:1.3;}
+.step-p{font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:12px;}
+.step-img{border-radius:18px;overflow:hidden;box-shadow:0 8px 32px rgba(5,11,31,.12);}
+.step-img img{width:100%;height:260px;object-fit:cover;}
+
+/* MARKET / CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px;}
+.chart-card{background:#fff;border:1px solid rgba(5,11,31,.1);border-radius:18px;padding:28px;}
+.chart-card h4{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:4px;}
+.chart-card p{font-size:12px;color:var(--text-muted);margin-bottom:20px;font-family:var(--mono);}
+.chart-wrap{height:250px;position:relative;}
+
+/* COMPETITOR TABLE */
+.comp-wrap{overflow-x:auto;margin-top:32px;border-radius:14px;border:1px solid rgba(5,11,31,.1);}
+.comp-table{width:100%;border-collapse:collapse;font-size:13px;}
+.comp-table thead{background:linear-gradient(135deg,var(--navy),var(--navy-deep));}
+.comp-table th{padding:14px 16px;text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.85);font-weight:600;}
+.comp-table th.hi{color:#00D4FF;}
+.comp-table td{padding:13px 16px;border-bottom:1px solid rgba(5,11,31,.07);color:var(--text-muted);}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-table td.hi{background:rgba(0,212,255,.04);font-weight:600;color:var(--text-dark);}
+.comp-table td.yes{color:#00B8E0;font-weight:700;}
+.comp-table td.no{color:#9BA8C0;}
+.comp-table tr:hover td{background:rgba(0,212,255,.03);}
+
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px;}
+.price-card{background:#fff;border:1px solid rgba(5,11,31,.12);border-radius:18px;padding:32px;position:relative;transition:border-color .25s,box-shadow .25s,transform .25s;}
+.price-card:hover{border-color:rgba(0,212,255,.4);box-shadow:0 8px 32px rgba(0,212,255,.12);transform:translateY(-3px);}
+.price-card.featured{border-color:var(--cyan);box-shadow:0 8px 40px rgba(0,212,255,.2);}
+.feat-lbl{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--cyan),var(--purple));color:var(--navy);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;}
+.price-tier{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan-dim);margin-bottom:8px;}
+.price-title{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text-dark);margin-bottom:8px;}
+.price-amount{font-family:var(--display);font-size:42px;font-weight:800;color:var(--navy);margin:12px 0 4px;}
+.price-amount span{font-size:16px;font-weight:500;color:var(--text-muted);}
+.price-desc{font-size:13px;color:var(--text-muted);line-height:1.7;margin:12px 0 20px;}
+.price-feat{list-style:none;margin-bottom:28px;}
+.price-feat li{font-size:13px;color:var(--text-muted);padding:8px 0;border-bottom:1px solid rgba(5,11,31,.06);display:flex;align-items:center;gap:8px;}
+.price-feat li::before{content:'✓';color:var(--cyan-dim);font-weight:700;flex-shrink:0;}
+
+/* FAQ */
+.faq-wrap{display:flex;flex-direction:column;gap:12px;margin-top:32px;}
+.faq-item{background:#fff;border:1px solid rgba(5,11,31,.1);border-radius:14px;overflow:hidden;transition:border-color .2s;}
+.faq-item.open{border-color:rgba(0,212,255,.4);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;user-select:none;}
+.faq-q h4{font-family:var(--display);font-size:15px;font-weight:600;color:var(--text-dark);}
+.faq-icon{font-size:20px;color:var(--cyan-dim);font-weight:300;flex-shrink:0;transition:transform .25s;}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-body{display:none;padding:0 24px 20px;font-size:14px;color:var(--text-muted);line-height:1.8;}
+.faq-item.open .faq-body{display:block;}
+
+/* CONTACT */
+.contact-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%);padding:clamp(60px,8vw,96px) 0;}
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px;align-items:start;}
+.contact-form{background:rgba(255,255,255,.07);border:1px solid rgba(0,212,255,.22);border-radius:18px;padding:32px;display:flex;flex-direction:column;gap:20px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(0,212,255,.9);font-weight:600;}
+.form-group input,.form-group select,.form-group textarea{background:rgba(255,255,255,.06);border:1px solid rgba(0,212,255,.25);border-radius:8px;padding:12px 14px;color:#fff;font-size:14px;font-family:var(--font);outline:none;transition:border-color .2s;}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,.35);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--cyan);}
+.form-group select{color:rgba(255,255,255,.75);}
+.form-group select option{background:var(--navy);}
+.form-group textarea{min-height:110px;resize:vertical;}
+.contact-info{color:#fff;}
+.contact-info h3{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:12px;}
+.contact-info .sub{font-size:14px;color:rgba(255,255,255,.75);line-height:1.8;margin-bottom:28px;}
+.c-detail{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
+.ic{width:40px;height:40px;border-radius:10px;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;color:var(--cyan);flex-shrink:0;}
+.c-detail strong{display:block;font-size:11px;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;color:rgba(0,212,255,.9);margin-bottom:3px;}
+.c-detail span{font-size:14px;color:rgba(255,255,255,.8);}
+
+/* FOOTER */
+footer{background:var(--footer-bg);padding:clamp(48px,7vw,80px) 0 0;border-top:1px solid rgba(0,212,255,.18);}
+.footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;}
+.f-brand p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8;margin-top:14px;max-width:280px;}
+.f-col-title{font-family:var(--mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(0,212,255,.9);margin-bottom:16px;font-weight:700;}
+.f-col{display:flex;flex-direction:column;gap:9px;}
+.f-col a{font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:color .2s;}
+.f-col a:hover{color:var(--cyan);}
+.footer-bar{border-top:1px solid rgba(0,212,255,.12);padding:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-bar p{font-size:12px;color:rgba(255,255,255,.35);font-family:var(--mono);}
+.footer-bar span{color:rgba(0,212,255,.75);}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.35);cursor:pointer;font-family:var(--mono);transition:color .2s;}
+.footer-links a:hover{color:var(--cyan);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero-inner{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .plat-grid{grid-template-columns:1fr 1fr;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .tw{grid-template-columns:1fr;}
+  .process-step{grid-template-columns:1fr;}
+  .step-img{order:0!important;}
+  .chart-grid{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .contact-wrap{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .plat-grid{grid-template-columns:1fr;}
+  .why-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bar{flex-direction:column;text-align:center;}
+  .hero-btns{flex-direction:column;}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <a class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-icon"><i class="fas fa-shield-halved"></i></div>
+    <div class="nav-logo-text">TrustQuant<span>Resilience Cloud</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><button id="nav-home" class="active" onclick="showPage('home')">Home</button></li>
+    <li><button id="nav-about" onclick="showPage('about')">About</button></li>
+    <li><button id="nav-platform" onclick="showPage('platform')">Platform</button></li>
+    <li><button id="nav-process" onclick="showPage('process')">How It Works</button></li>
+    <li><button id="nav-market" onclick="showPage('market')">Market</button></li>
+    <li><button id="nav-pricing" onclick="showPage('pricing')">Pricing</button></li>
+    <li><button id="nav-faq" onclick="showPage('faq')">FAQ</button></li>
+      <li><button id="nav-contact" onclick="showPage('contact')">Contact</button></li>
+  </ul>
+  <div class="nav-right">
+
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <button onclick="showPage('home');closeMob()">Home</button>
+  <button onclick="showPage('about');closeMob()">About</button>
+  <button onclick="showPage('platform');closeMob()">Platform</button>
+  <button onclick="showPage('process');closeMob()">How It Works</button>
+  <button onclick="showPage('market');closeMob()">Market</button>
+  <button onclick="showPage('pricing');closeMob()">Pricing</button>
+  <button onclick="showPage('faq');closeMob()">FAQ</button>
+    <button onclick="showPage('contact');closeMob()">Request Demo</button>
+  
+</div>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div class="page active" id="page-home">
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><div class="hero-bdot"></div>2026 · The Year of Trust Intelligence</div>
+      <h1>Measure <span class="cyan">Trust.</span><br>Reduce <span class="purple">Risk.</span><br>Drive Confidence.</h1>
+      <div class="hero-rule"></div>
+      <p class="hero-body">TrustQuant is an AI-powered Cyber-Financial Resilience Rating platform that quantifies trust, assesses risk, and transforms complex infrastructure data into confident decisions for UK SMEs, partners, and ecosystems.</p>
+      <div class="hero-btns">
+        <button class="btn-p" onclick="showPage('platform')"><i class="fas fa-shield-halved"></i>Explore Platform</button>
+        <button class="btn-s" onclick="showPage('contact')">Request a Demo</button>
+      </div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-top">
+        <div><div class="dash-lbl">TrustQuant Resilience Cloud</div><div class="dash-title">SME Trust Passport</div></div>
+        <div class="live-wrap"><div class="live-dot"></div>LIVE</div>
+      </div>
+      <div class="score-row"><div class="s-icon si-c"><i class="fas fa-server" style="font-size:13px"></i></div><div class="score-lbl">Infrastructure Maturity</div><div class="score-val" style="color:#00B8E0">92 / 100</div></div>
+      <div class="score-row"><div class="s-icon si-g"><i class="fas fa-lock" style="font-size:13px"></i></div><div class="score-lbl">Privileged Access Controls</div><div class="score-val" style="color:#6246E0">88 / 100</div></div>
+      <div class="score-row"><div class="s-icon si-e"><i class="fas fa-database" style="font-size:13px"></i></div><div class="score-lbl">Backup Discipline Score</div><div class="score-val">85 / 100</div></div>
+      <div class="score-row"><div class="s-icon si-c"><i class="fas fa-cloud" style="font-size:13px"></i></div><div class="score-lbl">Cloud Cost Efficiency</div><div class="score-val" style="color:#00B8E0">79 / 100</div></div>
+      <div class="score-big"><div class="sb-num">87</div><div class="sb-info"><div class="lbl">Cyber-Financial Resilience Rating</div><div class="sub">Evidence-Backed · Continuously Refreshed</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-dark">
+  <div class="container">
+    <div class="label-tag-w">Impact That Matters</div>
+    <h2 class="section-h2 h2-white">Protecting the UK SME Digital Economy</h2>
+    <div class="divider div-white"></div>
+    <p class="para-w" style="max-width:760px">UK SMEs face £3.4 billion in annual cyber losses. TrustQuant turns complex technical infrastructure evidence into clear, financially interpretable cyber-resilience ratings  unlocking better financing, lower insurance premiums, and commercial trust.</p>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">90%+</div><div class="stat-lbl">Improvement in Trust Accuracy for SME assessments</div></div>
+      <div class="stat-card"><div class="stat-num">70%+</div><div class="stat-lbl">Faster Risk Identification via automated telemetry</div></div>
+      <div class="stat-card"><div class="stat-num">60%+</div><div class="stat-lbl">Reduction in Risk Exposure across pilot SMEs</div></div>
+      <div class="stat-card"><div class="stat-num">50%+</div><div class="stat-lbl">Time Saved in Decision Making for lenders & insurers</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-light">
+  <div class="container">
+    <div class="label-tag">Core Capabilities</div>
+    <h2 class="section-h2 h2-dark">Our AI-Powered Trust Intelligence Platform</h2>
+    <div class="divider div-cyan"></div>
+    <p class="para-d" style="max-width:760px">TrustQuant links cloud APIs, Linux server telemetry, and credential access logs into one closed-loop resilience platform  quantifying cyber risk before it erodes trust, not after.</p>
+    <div class="plat-grid" style="margin-top:36px">
+      <div class="plat-card">
+        <div class="plat-img"><img src="t1.jpg" alt="cybersecurity digital trust platform dashboard" loading="lazy"><span class="pi-tag">Trust Quantification</span></div>
+        <div class="plat-inner"><div class="el-badge">Module 01</div><h3>Trust Quantification Engine</h3><p>AI models that measure trust across people, partners and ecosystems  producing a standardised Digital Resilience Rating from 0 to 100.</p><div class="more-txt">Our proprietary SME Digital Resilience Rating Engine learns over time from individual infrastructure states, analysing SSH configurations, open port vulnerabilities, and credential access permissions to produce a continuously refreshed, defensible trust rating for every business.</div><button class="expand-btn" onclick="toggleCard(this)">Learn More</button></div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-img"><img src="t2.jpg" alt="risk analytics dashboard on screen" loading="lazy"><span class="pi-tag">Risk Analytics</span></div>
+        <div class="plat-inner"><div class="el-badge">Module 02</div><h3>Risk Analytics & Anomaly Detection</h3><p>Detect hidden risks and anomalies with predictive intelligence  identifying configuration drift before it becomes a breach or a financial loss event.</p><div class="more-txt">Instead of hard technical checklists, TrustQuant's Risk Ontology Layer detects patterns that routinely lead to operational disruption, data breaches, or supply chain failures  translating technical alerts into commercially contextualised warnings and remediation suggestions.</div><button class="expand-btn" onclick="toggleCard(this)">Learn More</button></div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-img"><img src="t3.jpg" alt="network relationship mapping and intelligence" loading="lazy"><span class="pi-tag">Relationship Intelligence</span></div>
+        <div class="plat-inner"><div class="el-badge">Module 03</div><h3>Relationship Intelligence</h3><p>Map connections, patterns and influence across ecosystems  giving enterprise procurement teams quantifiable, evidence-backed supplier-risk outputs.</p><div class="more-txt">The Supply-Chain Risk Ledger aggregates vendor ratings into a unified dashboard, enabling enterprise procurement departments to easily manage Scope 3 operational risks across their supplier network without relying on easily falsified self-attestation questionnaires.</div><button class="expand-btn" onclick="toggleCard(this)">Learn More</button></div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-img"><img src="t4.jpg" alt="real-time financial analytics dashboard on laptop" loading="lazy"><span class="pi-tag">Real-Time Insights</span></div>
+        <div class="plat-inner"><div class="el-badge">Module 04</div><h3>Real-Time Insights Dashboard</h3><p>Actionable dashboards for faster and smarter decisions  translating technical security indicators into credit risk parameters commercial lenders and insurers require.</p><div class="more-txt">Our Cyber-to-Lending Risk Translation Layer (CLRTL) transforms technical configuration failures directly into financially interpretable credit risk indices that tie to projected cash flow volatility and lending probability of default (PD).</div><button class="expand-btn" onclick="toggleCard(this)">Learn More</button></div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-img"><img src="t5.jpg" alt="secure cloud infrastructure technology" loading="lazy"><span class="pi-tag">Secure & Scalable</span></div>
+        <div class="plat-inner"><div class="el-badge">Module 05</div><h3>Secure & Scalable Infrastructure</h3><p>Built on enterprise-grade security with cloud scalability  the Agentless Metadata Extraction Protocol (AMEP) extracts data without intrusive agent software.</p><div class="more-txt">AMEP securely integrates with AWS, GCP, and Azure APIs and Linux server configurations without requiring performance-heavy agent installations, enabling rapid SME adoption and making non-invasive continuous monitoring a reality for resource-constrained small businesses.</div><button class="expand-btn" onclick="toggleCard(this)">Learn More</button></div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-img"><img src="t6.jpg" alt="digital compliance certificate and trust passport" loading="lazy"><span class="pi-tag">SME Trust Passport</span></div>
+        <div class="plat-inner"><div class="el-badge">Module 06</div><h3>SME Trust Passport</h3><p>A continuously refreshed, cryptographically verifiable digital asset enabling SMEs to instantly share their security posture with banks, insurers, and corporate buyers.</p><div class="more-txt">The Trust Passport consolidates verified evidence and commercial translation into stakeholder-specific reports that are fully compliant with UK GDPR, the UK Cyber Security and Resilience Bill, and the strict underwriting criteria of the cyber-insurance market.</div><button class="expand-btn" onclick="toggleCard(this)">Learn More</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-alt">
+  <div class="container">
+    <div class="label-tag">Why TrustQuant</div>
+    <h2 class="section-h2 h2-dark">Built Exclusively for UK SME Digital Economy.</h2>
+    <div class="divider div-cyan"></div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon"><i class="fas fa-bolt"></i></div><h4>Predictive, Not Reactive</h4><p>Our AI models predict cyber-financial risk before a breach destroys working capital, instead of recording losses after the incident occurs.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-flag-checkered"></i></div><h4>UK-Trained Intelligence</h4><p>Models trained on British SME cloud configurations, UK cyber governance frameworks, and regional threat vectors  hyper-localised for the British market.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-fingerprint"></i></div><h4>Digital Resilience Fingerprint</h4><p>Capture each SME's unique infrastructure behaviour as a permanent, defensible digital asset that continuously improves with new data.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-sterling-sign"></i></div><h4>SME-Optimised Pricing</h4><p>Tiered SaaS pricing from just £50/month gives independent businesses enterprise-grade cyber-financial rating intelligence they can actually afford.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-diagram-project"></i></div><h4>Agentless & Non-Invasive</h4><p>Zero host-based agent installations required. Secure read-only cloud connection in under 10 minutes  no disruption to daily operations.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-leaf"></i></div><h4>ESG & Sustainability Impact</h4><p>Reduces UK SME cloud energy waste 20–30% per node and protects the livelihoods of 16 million workers employed in the UK SME private sector.</p></div>
+    </div>
+  </div>
+</section>
+</div><!-- /home -->
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<div class="page" id="page-about">
+<section class="about-hero">
+  <div class="container">
+    <div class="label-tag">About TrustQuant</div>
+    <h2 class="section-h2 h2-dark">Turning Fragmented Infrastructure Data into Verified Financial Trust Intelligence.</h2>
+    <div class="divider div-cyan"></div>
+    <p class="para-d" style="max-width:800px">TrustQuant is an AI-powered decision-intelligence and automated cyber-financial resilience platform for the UK professional, financial and digital services industry. We solve the trust-to-credit gap  where SMEs suffer massive cyber losses but lack the verified digital evidence to unlock better financing, lower insurance premiums, and enterprise supply chain access.</p>
+  </div>
+</section>
+<section class="sec-light">
+  <div class="container">
+    <div class="label-tag">Vision &amp; Mission</div>
+    <div class="tw" style="margin-top:32px">
+      <div style="background:#fff;border:1px solid rgba(5,11,31,.12);border-radius:18px;padding:32px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan-dim);margin-bottom:12px">Mission</div>
+        <h3 style="font-family:var(--display);font-size:22px;font-weight:700;color:var(--text-dark);margin-bottom:16px">Quantify, Prove & Continuously Optimise Digital Security Posture</h3>
+        <p style="color:var(--text-muted);font-size:14px;line-height:1.8">TrustQuant helps UK SMEs quantify, prove and continuously optimise their digital security posture by translating complex technical infrastructure evidence into clear, financially interpretable cyber-resilience ratings  helping operators unlock better financing, secure lower insurance premiums and foster commercial trust.</p>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(5,11,31,.12);border-radius:18px;padding:32px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan-dim);margin-bottom:12px">Vision</div>
+        <h3 style="font-family:var(--display);font-size:22px;font-weight:700;color:var(--text-dark);margin-bottom:16px">The Most Trusted Platform for SME Trust Intelligence</h3>
+        <p style="color:var(--text-muted);font-size:14px;line-height:1.8">To be the most trusted and used platform for cyber-financial resilience rating in the UK and globally  a future where every SME can prove its digital trustworthiness instantly, unlocking fairer credit, lower premiums, and access to enterprise supply chains without needing a dedicated security team.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sec-alt">
+  <div class="container">
+    <div class="label-tag">Core Values</div>
+    <h2 class="section-h2 h2-dark">What Drives TrustQuant</h2>
+    <div class="divider div-cyan"></div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon"><i class="fas fa-lightbulb"></i></div><h4>Innovation</h4><p>Continuous refinement of the TrustQuant Resilience Rating and cyber-to-lending translation models to stay ahead of evolving cloud vulnerabilities and host-based Linux risk vectors.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-magnifying-glass-chart"></i></div><h4>Accuracy</h4><p>A commitment to evidence-backed, forensic data integrity and the elimination of self-attested static survey biases in cybersecurity assessments.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-key"></i></div><h4>Sovereignty</h4><p>Empowering SMEs to own, verify, and share their verified digital resilience rating as a proprietary business asset to unlock competitive financial opportunities.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-gauge"></i></div><h4>Efficiency</h4><p>Making complex, enterprise-grade cloud security and host-hardening audits accessible through intuitive, low-friction, and non-invasive automated interfaces.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-handshake-angle"></i></div><h4>Empowerment</h4><p>Equipping SME founders with the clear cyber-financial foresight needed to secure premium credit terms, lower insurance premiums, and prove supplier trust without cyber-security expertise.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-seedling"></i></div><h4>ESG Impact</h4><p>Reducing UK SME cloud carbon footprint, protecting SME livelihoods, and supporting the UK government's national cyber resilience agenda and Net Zero digital strategy.</p></div>
+    </div>
+  </div>
+</section>
+<section class="sec-light">
+  <div class="container">
+    <div class="label-tag">Founder Fit</div>
+    <h2 class="section-h2 h2-dark">Meet the Co-Founders</h2>
+    <div class="divider div-cyan"></div>
+    <!-- Founder 1 -->
+    <div style="background:#fff;border:1px solid rgba(5,11,31,.12);border-radius:18px;padding:clamp(20px,3vw,36px);margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fm=jpg&q=60&w=120&h=120&auto=format&fit=crop&crop=face" alt="Chaitanya Nagabhairu CTO TrustQuant" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,212,255,.4)">
+        <div>
+          <h3 style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--text-dark)">Chaitanya Nagabhairu</h3>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan-dim);margin-top:4px">Chief Technology Officer &amp; Technical Co-Founder</div>
+        </div>
+      </div>
+      <p style="font-size:14px;color:var(--text-muted);line-height:1.8;max-width:800px">Chaitanya holds an MSc in Cybersecurity with Merit from the University of Hertfordshire. His dissertation, "Hybrid Cryptographic Model for Securing Cloud Data using TwoFish and RSA", demonstrates his capability to architect secure, enterprise-grade cloud data protection models. He brings deep expertise in AI threat modelling, host-based Linux system hardening, and secure API integrations  leading the design of TrustQuant's agentless scanning engine and Cyber-to-Lending Risk Translation Layer (CLRTL).</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
+        <span class="badge badge-c"><span class="bdot"></span>MSc Cybersecurity, Hertfordshire</span>
+        <span class="badge badge-c"><span class="bdot"></span>AI Threat Modelling</span>
+        <span class="badge badge-c"><span class="bdot"></span>Linux Infrastructure Automation</span>
+        <span class="badge badge-c"><span class="bdot"></span>Cryptographic Architecture</span>
+        <span class="badge badge-c"><span class="bdot"></span>ISO 27001 · NIST · Kali Linux</span>
+      </div>
+    </div>
+    <!-- Founder 2 -->
+    <div style="background:#fff;border:1px solid rgba(5,11,31,.12);border-radius:18px;padding:clamp(20px,3vw,36px)">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?fm=jpg&q=60&w=120&h=120&auto=format&fit=crop&crop=face" alt="Laxman Rao Yennamaneni COO TrustQuant" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid rgba(123,92,250,.4)">
+        <div>
+          <h3 style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--text-dark)">Laxman Rao Yennamaneni</h3>
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--purple-dim);margin-top:4px">Chief Operating Officer &amp; Commercial Co-Founder</div>
+        </div>
+      </div>
+      <p style="font-size:14px;color:var(--text-muted);line-height:1.8;max-width:800px">Laxman holds an MSc in Management with Extended Professional Practice from Coventry University, backed by professional experience as a financial intern and operations manager. His hands-on background in corporate balance sheet analysis, SQL database operations, and operational workflow management allows TrustQuant to algorithmically map security indicators into credit metrics, ensuring the platform delivers commercially viable outputs that SME operators and enterprise underwriters trust equally.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
+        <span class="badge badge-g"><span class="bdot"></span>MSc Management, Coventry</span>
+        <span class="badge badge-g"><span class="bdot"></span>Corporate Finance &amp; Analysis</span>
+        <span class="badge badge-g"><span class="bdot"></span>Operational Management</span>
+        <span class="badge badge-g"><span class="bdot"></span>SaaS Go-To-Market Strategy</span>
+        <span class="badge badge-g"><span class="bdot"></span>UK SME Credit Risk</span>
+      </div>
+    </div>
+    <div class="tw" style="margin-top:32px">
+      <div style="background:linear-gradient(135deg,var(--navy),var(--navy-deep));border-radius:18px;padding:32px;color:#fff">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,212,255,.85);margin-bottom:12px">Exceptional Founder–Product–Market Fit</div>
+        <h3 style="font-family:var(--display);font-size:19px;font-weight:700;margin-bottom:14px">Built by Founders Who Bridge Tech & Finance</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.8);line-height:1.8">Chaitanya has worked directly with live cloud networks and server infrastructure, witnessing firsthand how configuration drift and unpatched vulnerabilities lead to operational downtime. Laxman has worked with corporate balance sheets, understanding how a single digital interruption can destroy working capital. Together they translate technical posture directly into financial capital parameters.</p>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(5,11,31,.12);border-radius:18px;padding:32px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan-dim);margin-bottom:14px">Validated Pilot Achievements</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text-mid)"><span style="color:var(--cyan-dim);font-size:18px">✓</span>81% of 177+ UK SMEs highly interested in automated cyber-financial scoring</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text-mid)"><span style="color:var(--cyan-dim);font-size:18px">✓</span>25% average reduction in high-risk vulnerabilities across 8-week pilot</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text-mid)"><span style="color:var(--cyan-dim);font-size:18px">✓</span>40% risk reduction at cloud-heavy startups via FinOps reallocation</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text-mid)"><span style="color:var(--cyan-dim);font-size:18px">✓</span>4.3/5 user satisfaction for underwriting and lending use cases</div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text-mid)"><span style="color:var(--cyan-dim);font-size:18px">✓</span>5 Letters of Intent from UK professional service SMEs post-demo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /about -->
+
+<!-- ═══════════════ PLATFORM ═══════════════ -->
+<div class="page" id="page-platform">
+<section class="sec-dark">
+  <div class="container">
+    <div class="label-tag-w">The Full Platform</div>
+    <h2 class="section-h2 h2-white">The AI-Powered Cyber-Financial Resilience Engine</h2>
+    <div class="divider div-white"></div>
+    <p class="para-w" style="max-width:760px">A unified, closed-loop decision-intelligence platform that converts fragmented cloud API data, Linux server telemetry, and credential access logs into verified financial trust ratings. TrustQuant transforms technical infrastructure evidence from a compliance burden into a precise driver of commercial opportunity.</p>
+  </div>
+</section>
+
+ 
+</section>
+<section class="sec-alt">
+  <div class="container">
+    <div class="label-tag">Trusted Across Industries</div>
+    <h2 class="section-h2 h2-dark">Built for Every Digitally-Dependent SME Sector.</h2>
+    <div class="divider div-cyan"></div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon"><i class="fas fa-store"></i></div><h4>E-Commerce Platforms</h4><p>High-volume online retailers securing their cloud environments and proving digital trustworthiness to enterprise supply chains and cyber insurers.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-building"></i></div><h4>Professional Services</h4><p>Legal, accounting and consulting firms translating their technical posture into verified compliance evidence for client onboarding and regulatory audits.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-code"></i></div><h4>Small SaaS Companies</h4><p>Cloud-hosted tech startups demonstrating infrastructure maturity to enterprise procurement teams and securing access to working capital loans.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-truck"></i></div><h4>Logistics & Supply Chain</h4><p>Logistics suppliers proving their digital resilience to enterprise buyers demanding strict third-party risk validation across Scope 3 supply chains.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-heartbeat"></i></div><h4>Healthcare SMEs</h4><p>Healthcare providers securing patient data environments and maintaining continuous compliance with UK GDPR and NHS digital security standards.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-landmark"></i></div><h4>FinTech & Banking</h4><p>Financial services companies and MSPs managing third-party vendor risk portfolios with quantifiable, evidence-backed digital trust ratings.</p></div>
+    </div>
+  </div>
+</section>
+</div><!-- /platform -->
+
+<!-- ═══════════════ PROCESS ═══════════════ -->
+<div class="page" id="page-process">
+<section class="sec-light" style="padding-top:clamp(60px,8vw,96px)">
+  <div class="container">
+    <div class="label-tag">How It Works</div>
+    <h2 class="section-h2 h2-dark">From Self-Attested Questionnaires to Verified Continuous Trust Intelligence</h2>
+    <div class="divider div-cyan"></div>
+    <div style="margin-top:50px">
+      <div class="process-step">
+        <div>
+          <div class="step-num">Phase 01 · Year 1</div>
+          <h3 class="step-h3">UK Soft Launch &amp; Product Validation</h3>
+          <p class="step-p">A London and South-East focused pilot programme trains the first UK-specific machine learning models on SME cloud configurations, Linux system telemetry, identity access profiles, and administrative privilege logs consistent with NCSC Cyber Essentials v3.3 guidelines.</p>
+          <p class="step-p">Co-founders Chaitanya Nagabhairu and Laxman Rao Yennamaneni lead paid pilots at 5–10 UK SME locations, integrating agentless API connectors and Linux inspection scripts to build the first Digital Resilience Fingerprints and validate the CLRTL risk translation logic.</p>
+        </div>
+        <div class="step-img"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?fm=jpg&q=60&w=900&auto=format&fit=crop" alt="co-founders validating the pilot programme" loading="lazy"></div>
+      </div>
+      <div class="process-step">
+        <div class="step-img" style="order:2"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?fm=jpg&q=60&w=900&auto=format&fit=crop" alt="UK expansion growth analytics dashboard" loading="lazy"></div>
+        <div style="order:1">
+          <div class="step-num">Phase 02 · Year 2</div>
+          <h3 class="step-h3">Full UK Launch &amp; Model Refinement</h3>
+          <p class="step-p">The TrustQuant Resilience Rating scales to 50–100 SME client nodes across Manchester, Birmingham, and South-West tech hubs, with plug-and-play API connectivity to UK commercial lending portals, credit scoring bureaus, and major MSP systems (ConnectWise, Autotask).</p>
+          <p class="step-p">SME Configuration Drift Autocalibration (CDAP) models self-calibrate their rating outputs based on real UK SME drift behaviours, and the Trust Passport generation becomes fully automated, reducing compliance processing from months to minutes.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div>
+          <div class="step-num">Phase 03 · Year 3+</div>
+          <h3 class="step-h3">Scale, Network Effects &amp; International Expansion</h3>
+          <p class="step-p">The Community Cyber-Intelligence Registry (CCIR) goes live with federated machine learning, sharing anonymised UK risk trends across SMEs by industry sector, region, and company size  creating powerful network effects no competitor can easily replicate.</p>
+          <p class="step-p">The platform expands to North England, Scotland, Wales, and Northern Ireland, then launches early EU pilots in Germany, France, and the Nordic tech hubs, aligning with the EU NIS2 Directive  scaling toward 500+ enterprise nodes globally through cloud-native, modular SaaS architecture.</p>
+        </div>
+        <div class="step-img"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?fm=jpg&q=60&w=900&auto=format&fit=crop" alt="international expansion strategy city skyline" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sec-alt">
+  <div class="container">
+    <div class="label-tag">Pilot Programme Results</div>
+    <h2 class="section-h2 h2-dark">Proven in a Real-World 8-Week UK Pilot</h2>
+    <div class="divider div-cyan"></div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon"><i class="fas fa-arrow-trend-down"></i></div><h4>25% Vulnerability Reduction</h4><p>Average reduction in high-risk technical vulnerabilities across the 5 UK SME pilot locations over 8 weeks.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-cloud-arrow-down"></i></div><h4>40% Risk Reduction via FinOps</h4><p>Cloud-heavy startups achieved 40% risk reduction funded directly by identified cloud-cost savings through the Remediation Funding Logic.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-star"></i></div><h4>4.3 / 5 Satisfaction Score</h4><p>User satisfaction rating for underwriting and lending use cases, and 4.0/5 for ease of integration across pilot SME operators.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-bolt"></i></div><h4>Immediate Risk Translation</h4><p>Actionable financial risk translation delivered immediately after automated evidence ingestion  no waiting weeks for a manual compliance report.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-file-shield"></i></div><h4>5 Letters of Intent</h4><p>Three independent professional service SMEs and two regional cloud advisory firms submitted non-binding Letters of Intent after post-pilot product demonstrations.</p></div>
+      <div class="why-card"><div class="why-icon"><i class="fas fa-shield-check"></i></div><h4>81% Market Interest</h4><p>81% of 150 UK SMEs, MSPs and cyber-insurance brokers surveyed reported being highly interested in automated cyber-financial resilience scoring.</p></div>
+    </div>
+  </div>
+</section>
+</div><!-- /process -->
+
+<!-- ═══════════════ MARKET ═══════════════ -->
+<div class="page" id="page-market">
+<section class="sec-light" style="padding-top:clamp(60px,8vw,96px)">
+  <div class="container">
+    <div class="label-tag">Market Research</div>
+    <h2 class="section-h2 h2-dark">The UK SME Cyber-Financial Resilience Market</h2>
+    <div class="divider div-cyan"></div>
+    <p class="para-d" style="max-width:760px">The global cyber risk quantification market was valued at USD 3.20 billion in 2024 and is projected to grow at 16.1% through 2034. The UK leads European adoption with a domestic SME cybersecurity software market of approximately £315 million in 2024 and a CAGR of 18.5% to 2033 driven by the UK Cyber Security and Resilience Bill and EU NIS2 Directive.</p>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>Cybersecurity Pain Points  UK SMEs</h4>
+        <p>% of respondents identifying as critical operational challenge</p>
+        <div class="chart-wrap"><canvas id="chartSector"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h4>Platform Feature Demand</h4>
+        <p>% of respondents rating as highly valuable (177 validated responses)</p>
+        <div class="chart-wrap"><canvas id="chartRootCause"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h4>TrustQuant vs Competitors</h4>
+        <p>Capability comparison across key dimensions</p>
+        <div class="chart-wrap"><canvas id="chartRadar"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h4>UK Cyber Risk Quantification Market Growth</h4>
+        <p>USD Billions, 2024–2034 (Projected)</p>
+        <div class="chart-wrap"><canvas id="chartGrowth"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sec-alt">
+  <div class="container">
+    <div class="label-tag">Competitor Analysis</div>
+    <h2 class="section-h2 h2-dark">Comparison Table  Key Competitors vs TrustQuant</h2>
+    <div class="divider div-cyan"></div>
+    <div class="comp-wrap">
+      <table class="comp-table">
+        <thead><tr><th>Capability</th><th>BitSight Technologies</th><th>SecurityScorecard</th><th>Experian / D&B</th><th class="hi">TrustQuant</th></tr></thead>
+        <tbody>
+          <tr><td>Internal cloud & Linux infrastructure visibility</td><td class="no">✗ External only</td><td class="no">✗ External only</td><td class="no">✗ None</td><td class="hi yes">✓</td></tr>
+          <tr><td>Cyber-to-lending credit risk translation</td><td class="no">✗</td><td class="no">✗</td><td class="no">Financial only</td><td class="hi yes">✓</td></tr>
+          <tr><td>Agentless, non-invasive integration</td><td class="no">Passive scan</td><td class="no">Passive scan</td><td class="no">✗</td><td class="hi yes">✓</td></tr>
+          <tr><td>SME-affordable pricing</td><td class="no">✗ Enterprise-only</td><td class="no">✗ Enterprise-only</td><td class="no">Variable</td><td class="hi yes">✓ From £50/mo</td></tr>
+          <tr><td>Reusable Trust Passport for lenders & insurers</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="hi yes">✓</td></tr>
+          <tr><td>FinOps remediation funding logic</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="hi yes">✓</td></tr>
+          <tr><td>UK-trained ML models, NCSC-aligned</td><td class="no">Generic global</td><td class="no">Generic global</td><td class="no">✗</td><td class="hi yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</div><!-- /market -->
+
+<!-- ═══════════════ PRICING ═══════════════ -->
+<div class="page" id="page-pricing">
+<section class="sec-light" style="padding-top:clamp(60px,8vw,96px)">
+  <div class="container">
+    <div class="label-tag">Pricing</div>
+    <h2 class="section-h2 h2-dark">Plans That Scale With Your Business</h2>
+    <div class="divider div-cyan"></div>
+    <p class="para-d" style="max-width:760px">From single-site resilience tracking to multi-cloud enterprise governance  pricing built for the UK SME digital economy where every pound of subscription cost is offset by insurance premium savings and improved credit access.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Starter Plan</div>
+        <div class="price-title">Basic Resilience</div>
+        <div class="price-amount">£50<span>/mo</span></div>
+        <p class="price-desc">Non-invasive cloud metadata assessment, fundamental resilience dashboard, and standard compliance PDF for small startups.</p>
+        <ul class="price-feat">
+          <li>Read-only cloud metadata assessment</li>
+          <li>Baseline resilience dashboard</li>
+          <li>Standard compliance PDF report</li>
+          <li>Single infrastructure node</li>
+        </ul>
+        <button class="btn-s" style="width:100%;justify-content:center" onclick="showPage('contact')">Get Started</button>
+      </div>
+      <div class="price-card featured">
+        <div class="feat-lbl">Most Popular</div>
+        <div class="price-tier">Professional Plan</div>
+        <div class="price-title">Pro Resilience</div>
+        <div class="price-amount">£150<span>/mo</span></div>
+        <p class="price-desc">Advanced predictive cyber-financial risk translation, active configuration drift alerts, and full host-based Linux server telemetry for growing SMEs and MSPs.</p>
+        <ul class="price-feat">
+          <li>Everything in Starter</li>
+          <li>Active configuration drift alerts</li>
+          <li>Cyber-to-Lending Risk Translation</li>
+          <li>Full Linux server telemetry</li>
+          <li>MSP partner dashboard access</li>
+        </ul>
+        <button class="btn-p" style="width:100%;justify-content:center" onclick="showPage('contact')">Get Started</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Enterprise Plan</div>
+        <div class="price-title">Enterprise Resilience</div>
+        <div class="price-amount">£300<span>/mo</span></div>
+        <p class="price-desc">Dedicated multi-cloud connector setup, verifiable Trust Passport PDF exports, automated ESG compliance reporting, and CCIR access for lenders and underwriters.</p>
+        <ul class="price-feat">
+          <li>Everything in Professional</li>
+          <li>Multi-cloud connector setup</li>
+          <li>Shareable Trust Passport exports</li>
+          <li>Automated ESG compliance reporting</li>
+          <li>CCIR federated benchmarking access</li>
+          <li>Dedicated success management</li>
+        </ul>
+        <button class="btn-s" style="width:100%;justify-content:center" onclick="showPage('contact')">Talk to Sales</button>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:32px;font-size:13px;color:var(--text-muted)">Secure Connector Setup from £600 one-time · Professional Consulting from £500 · Premium Reports £200–£500/year</p>
+  </div>
+</section>
+</div><!-- /pricing -->
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<div class="page" id="page-faq">
+<section class="sec-light" style="padding-top:clamp(60px,8vw,96px)">
+  <div class="container">
+    <div class="label-tag">FAQ</div>
+    <h2 class="section-h2 h2-dark">Frequently Asked Questions</h2>
+    <div class="divider div-cyan"></div>
+    <div class="faq-wrap">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="toggleFAQ(this.parentElement)"><h4>What exactly is the cyber-to-financial trust gap?</h4><span class="faq-icon">+</span></div>
+        <div class="faq-body">It's the gap between a business's technical security posture and its ability to prove digital trustworthiness to lenders, insurers, and enterprise buyers. Over 78% of UK SMEs fall into the "low" or "very low" categories of cyber resilience, yet the vast majority rely on static, easily falsified self-attestation questionnaires that provide no real-time financial risk visibility. TrustQuant bridges this gap with verified, continuously refreshed evidence.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this.parentElement)"><h4>Do I need to install agent software on my servers?</h4><span class="faq-icon">+</span></div>
+        <div class="faq-body">No. TrustQuant is fully agentless. Our Agentless Metadata Extraction Protocol (AMEP) uses secure, read-only REST API connectors to extract infrastructure metadata from AWS, Azure, and GCP environments  without requiring any performance-heavy agent software to be installed on your hosts. Secure cloud connection is achievable in under 10 minutes.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this.parentElement)"><h4>How is this different from BitSight or SecurityScorecard?</h4><span class="faq-icon">+</span></div>
+        <div class="faq-body">BitSight and SecurityScorecard rely on passive external scanning of public IP addresses and DNS records  they are completely blind to an SME's internal cloud configurations, Linux server hardening states, and credential access patterns. Neither translates technical posture into credit risk parameters that commercial lenders require. TrustQuant is the only platform that bridges internal infrastructure evidence directly to financial underwriting intelligence, at SME-affordable pricing.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this.parentElement)"><h4>What results have pilot SMEs seen?</h4><span class="faq-icon">+</span></div>
+        <div class="faq-body">An 8-week pilot across 5 UK SME locations showed a 25% average reduction in high-risk technical vulnerabilities, with cloud-heavy startups achieving 40% risk reduction funded directly by identified cloud-cost savings. User satisfaction was 4.3/5 for underwriting and lending use cases, and operators reported immediate improvements in cloud-cost efficiency, backup restore confidence, and supply-chain reporting.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this.parentElement)"><h4>Is TrustQuant compliant with UK data protection regulations?</h4><span class="faq-icon">+</span></div>
+        <div class="faq-body">Yes. TrustQuant is built around strict "privacy-by-design" principles, extracting read-only technical metadata and never writing or modifying system data. The platform is natively aligned with UK GDPR (Data Protection Act 2018), the NCSC's Cyber Essentials Plus v3.3 guidelines, the UK Cyber Governance Code of Practice, and the upcoming UK Cyber Security and Resilience Bill  with all client telemetry encrypted using a hybrid TwoFish/RSA cryptographic model.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this.parentElement)"><h4>How does the Trust Passport help secure better financing?</h4><span class="faq-icon">+</span></div>
+        <div class="faq-body">The SME Trust Passport is a cryptographically verifiable digital asset that consolidates all verified infrastructure evidence and financial risk translation into stakeholder-specific reports. SMEs can instantly share this with commercial lenders to demonstrate repayment capacity, with cyber-insurers to secure lower premiums (up to 25% reduction), and with enterprise procurement teams to clear supplier onboarding audits  turning digital resilience into a direct commercial competitive advantage.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /faq -->
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<div class="page" id="page-contact">
+<section class="contact-hero">
+  <div class="container">
+    <div class="label-tag-w">Get In Touch</div>
+    <h2 class="section-h2 h2-white">Request a Demo of TrustQuant Resilience Cloud</h2>
+    <div class="divider div-white"></div>
+    <div class="contact-wrap">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group"><label>Full Name</label><input type="text" required placeholder="Your name"></div>
+        <div class="form-group"><label>Business Email</label><input type="email" required placeholder="you@company.co.uk"></div>
+        <div class="form-group"><label>Business Type</label>
+          <select>
+            <option>E-Commerce / Online Retail</option>
+            <option>Professional Services</option>
+            <option>Small SaaS / Tech Startup</option>
+            <option>Logistics & Supply Chain</option>
+            <option>Managed Service Provider (MSP)</option>
+            <option>Financial Services / FinTech</option>
+            <option>Healthcare SME</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea placeholder="Tell us about your business and what you'd like to see in a TrustQuant demo"></textarea></div>
+        <button class="btn-p" type="submit" style="width:100%;justify-content:center">Send Demo Request <i class="fas fa-arrow-right" style="margin-left:6px"></i></button>
+      </form>
+      <div class="contact-info">
+        <h3>Let's Quantify Your Digital Trust</h3>
+        <p class="sub">Whether you're a single-site SME or a multi-cloud enterprise, our team will walk you through how TrustQuant transforms your infrastructure evidence into verified financial trust intelligence.</p>
+        <div class="c-detail"><div class="ic"><i class="fas fa-envelope"></i></div><div><strong>Email</strong><span>trustquantuk@outlook.com</span></div></div>
+        <div class="c-detail"><div class="ic"><i class="fas fa-location-dot"></i></div><div><strong>Location</strong><span>United Kingdom</span></div></div>
+        <div class="c-detail"><div class="ic"><i class="fas fa-users"></i></div><div><strong>Founders</strong><span>Chaitanya Nagabhairu &amp; Laxman Rao Yennamaneni</span></div></div>
+        <div class="c-detail"><div class="ic"><i class="fas fa-shield-halved"></i></div><div><strong>Compliance</strong><span>UK GDPR · Cyber Essentials Plus v3.3 · NCSC-Aligned</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /contact -->
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="f-brand">
+        <a class="nav-logo" onclick="showPage('home')">
+          <div class="nav-logo-icon"><i class="fas fa-shield-halved"></i></div>
+          <div class="nav-logo-text">TrustQuant<span>Resilience Cloud</span></div>
+        </a>
+        <p>AI-powered cyber-financial resilience rating platform helping UK SMEs quantify trust, reduce risk, and drive confident decisions for lenders, insurers, and enterprise supply chains.</p>
+        <p style="margin-top:10px;font-family:var(--mono);font-size:10px;color:rgba(0,212,255,.6);letter-spacing:1px">WE TURN DATA INTO TRUST.</p>
+      </div>
+      <div>
+        <div class="f-col-title">Platform</div>
+        <div class="f-col">
+          <a onclick="showPage('platform')">Resilience Rating Engine</a>
+          <a onclick="showPage('platform')">Cyber-to-Lending Translation</a>
+          <a onclick="showPage('platform')">Agentless Metadata Extraction</a>
+          <a onclick="showPage('platform')">Configuration Drift Alerts</a>
+          <a onclick="showPage('platform')">Community Cyber-Intel Registry</a>
+          <a onclick="showPage('platform')">SME Trust Passport</a>
+        </div>
+      </div>
+      <div>
+        <div class="f-col-title">Company</div>
+        <div class="f-col">
+          <a onclick="showPage('about')">About TrustQuant</a>
+          <a onclick="showPage('about')">Chaitanya Nagabhairu · CTO</a>
+          <a onclick="showPage('about')">Laxman Rao Yennamaneni · COO</a>
+          <a onclick="showPage('process')">How It Works</a>
+          <a onclick="showPage('faq')">FAQ</a>
+          <a onclick="showPage('contact')">Request a Demo</a>
+        </div>
+      </div>
+      <div>
+        <div class="f-col-title">Solutions</div>
+        <div class="f-col">
+          <a onclick="showPage('platform')">E-Commerce & SaaS</a>
+          <a onclick="showPage('platform')">Professional Services</a>
+          <a onclick="showPage('platform')">MSPs & Cloud Advisors</a>
+          <a onclick="showPage('platform')">Lenders & Insurers</a>
+          <a onclick="showPage('pricing')">Starter · £50/mo</a>
+          <a onclick="showPage('pricing')">Professional · £150/mo</a>
+          <a onclick="showPage('pricing')">Enterprise · £300/mo</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <p>© 2026 <span>TrustQuant</span> (Operating as TrustQuant Resilience Cloud) · United Kingdom · UK GDPR Compliant · trustquant.co.uk · Founded by Chaitanya Nagabhairu &amp; Laxman Rao Yennamaneni</p>
+      <div class="footer-links">
+        <a onclick="showPage('contact')">Privacy Policy</a>
+        <a onclick="showPage('contact')">Terms of Service</a>
+        <a onclick="showPage('contact')">NCSC Compliance</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function showPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('page-'+n);
+  if(pg)pg.classList.add('active');
+  const bt=document.getElementById('nav-'+n);
+  if(bt)bt.classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+  if(n==='market'&&!window._charts){initCharts();window._charts=true;}
+}
+function toggleCard(btn){
+  const c=btn.closest('.plat-card');
+  c.classList.toggle('open');
+  btn.innerHTML=c.classList.contains('open')?'Show Less':'Learn More';
+}
+function toggleFAQ(el){el.classList.toggle('open');}
+function closeMob(){
+  document.getElementById('mobileNav').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+document.getElementById('hamburger').addEventListener('click',function(){
+  this.classList.toggle('open');
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+function handleSubmit(e){
+  e.preventDefault();
+  const b=e.target.querySelector('button[type=submit]');
+  b.innerHTML='<i class="fas fa-check"></i> Demo Request Sent!';
+  b.style.background='linear-gradient(135deg,#00B8E0,#6246E0)';
+  b.disabled=true;
+  setTimeout(()=>{b.innerHTML='Send Demo Request <i class="fas fa-arrow-right" style="margin-left:6px"></i>';b.style.background='';b.disabled=false;e.target.reset();},3500);
+}
+const C='rgba(0,212,255,.85)',C2='rgba(0,212,255,.4)',P='rgba(123,92,250,.85)',P2='rgba(123,92,250,.45)',V='rgba(168,85,247,.8)',GR='rgba(5,11,31,.06)',MT='rgba(27,45,90,.85)';
+Chart.defaults.font.family='IBM Plex Mono, monospace';Chart.defaults.font.size=11;Chart.defaults.color=MT;
+function initCharts(){
+  new Chart(document.getElementById('chartSector'),{type:'bar',data:{labels:['Unverified Vendor Connections','High Credit Risk / Lost Lending','Lack of Cyber-Financial Taxonomy','Manual Audit Inefficiency','Rising Insurance Premiums'],datasets:[{label:'% of UK SMEs',data:[28.2,22.6,17.5,11.3,20.4],backgroundColor:[C,P,C2,V,P2],borderRadius:6,barPercentage:.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{maxRotation:55,minRotation:0,autoSkip:false,font:{size:window.innerWidth<480?8:9}}},y:{grid:{color:GR},ticks:{callback:v=>v+'%'}}}}});
+  new Chart(document.getElementById('chartRootCause'),{type:'doughnut',data:{labels:['Real-Time Resilience Predictions (90%+)','Automated Risk Classification (89%)','Agentless Fingerprinting (88%)','Trust Passport Sharing (85%)','FinOps Remediation Funding (83%)'],datasets:[{data:[90,89,88,85,83],backgroundColor:[C,P,V,C2,P2],borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:9}}}}}});
+  new Chart(document.getElementById('chartRadar'),{type:'radar',data:{labels:['Internal Cloud Visibility','Cyber-to-Credit Translation','Agentless Integration','SME Pricing','UK-Trained ML','Trust Passport'],datasets:[{label:'TrustQuant',data:[5,5,5,5,5,5],backgroundColor:'rgba(0,212,255,.1)',borderColor:C,borderWidth:2,pointBackgroundColor:C},{label:'BitSight',data:[1,1,2,1,2,1],backgroundColor:'rgba(123,92,250,.05)',borderColor:P2,borderWidth:1.5,pointBackgroundColor:P2},{label:'SecurityScorecard',data:[1,1,2,1,2,1],backgroundColor:'rgba(5,11,31,.04)',borderColor:'rgba(5,11,31,.4)',borderWidth:1.5,pointBackgroundColor:'rgba(5,11,31,.4)'},{label:'Experian/D&B',data:[1,2,1,2,1,1],backgroundColor:'rgba(168,85,247,.05)',borderColor:'rgba(168,85,247,.5)',borderWidth:1.5,pointBackgroundColor:'rgba(168,85,247,.5)'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:9}}}},scales:{r:{grid:{color:GR},pointLabels:{font:{size:10}},ticks:{display:false},min:0,max:5}}}});
+  new Chart(document.getElementById('chartGrowth'),{type:'bar',data:{labels:['2024','2025','2026','2027','2028','2029','2034'],datasets:[{label:'Global CRQ Market (USD B)',data:[3.2,3.71,4.3,5.0,5.8,6.7,12.1],backgroundColor:P,borderRadius:5,barPercentage:.55},{type:'line',label:'CAGR %',data:[null,16.1,16.1,16.1,16.1,16.1,16.1],borderColor:C,borderWidth:2,yAxisID:'y2',tension:.4,pointBackgroundColor:C,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:window.innerWidth<480?8:10}}}},scales:{x:{grid:{color:GR},ticks:{font:{size:window.innerWidth<480?8:10}}},y:{grid:{color:GR},ticks:{callback:v=>'$'+v+'B',font:{size:window.innerWidth<480?8:10}}},y2:{position:'right',grid:{display:false},ticks:{callback:v=>v+'%',font:{size:window.innerWidth<480?8:10}}}}}});
+}
+</script>
+</body>
+</html>
